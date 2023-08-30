@@ -53,22 +53,21 @@ def make_videos_for_figure_1(h5_a_b):
     
     b0 = -2
     b_idx = np.abs(b_arr - b0).argmin()  
-
+    
     for i, a in enumerate(a_arr):
     
-        r = h5['FS']['r'][i, b_idx, :]
-        d1 = h5['FS']['d1'][i, b_idx, :]
-        d2 = h5['FS']['d2'][i, b_idx, :]
-        d3 = h5['FS']['d3'][i, b_idx, :]
+        r = h5['FS']['r'][i, b_idx, :10]
+        d1 = h5['FS']['d1'][i, b_idx, :10]
+        d2 = h5['FS']['d2'][i, b_idx, :10]
+        d3 = h5['FS']['d3'][i, b_idx, :10]
         
         FS = FrameSequenceNumpy(x=r, e0=d3, e1=d1, e2=d2)
     
         filename = f'video_a={a}_b={b0}.mpg'
-            
+        
         WS = WormStudio(FS)
-        WS.generate_clip(video_dir / filename, 
-            add_trajectory = False, n_arrows = 0.2)
-    
+        WS.generate_clip(video_dir / filename, add_trajectory = False, n_arrows = 0.2)
+        
     return
             
 def make_videos_for_figure_2(h5_f):
