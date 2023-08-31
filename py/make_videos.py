@@ -84,18 +84,17 @@ def make_videos_for_figure_2(h5_f):
     fig_dir.mkdir(parents=True, exist_ok=True)
 
     for i, f in zip(np.arange(len(f_arr), dtype = int)[::5], f_arr[::5]):
-    
+            
         r = h5['FS']['r'][i, :]
         d1 = h5['FS']['d1'][i, :]
         d2 = h5['FS']['d2'][i, :]
         d3 = h5['FS']['d3'][i, :]        
-        t = h5['t'][:]
+        t = h5['t'][:10]
         
         FS = FrameSequenceNumpy(x=r, e0=d3, e1=d1, e2=d2)
         setattr(FS, 'times', t)
     
-    
-        file_path = fig_dir / f'sperm_video_{f}.mpg'
+        file_path = fig_dir / f'sperm_video_{np.round(f, 0)}'
                
         WS = WormStudio(FS)
         WS.generate_clip(
@@ -103,7 +102,7 @@ def make_videos_for_figure_2(h5_f):
             add_trajectory = False, 
             n_arrows = 0.2)
 
-        return
+    return
         
 if __name__ == '__main__':
     
