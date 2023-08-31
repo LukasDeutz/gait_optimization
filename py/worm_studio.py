@@ -52,9 +52,14 @@ class WormStudio():
         self.N = self.X.shape[1] # number of points along the centreline
         
         dt = FS.times[1] - FS.times[0] 
-        self.fps = 1.0 / dt
-        self.t = FS.times
         
+        self.t = FS.times
+
+        # To generate real time simulation video the dimensionless time 
+        # needs to be converted to physical time        
+        if hasattr(FS, 'f'):                
+            self.fps = FS.f / dt
+                        
         self.lengths = self._comp_worm_length_from_centreline()
         
     @staticmethod
@@ -103,11 +108,16 @@ class WormStudio():
         NF = NaturalFrame(self.X[0])
         
         NF.T, NF.M1, NF.M2 = self.D3[0], self.D1[0], self.D2[0]  
-                                        
+        
+        default_midline_opts ={'opacity': 1, 'line_width': 8}
+        default_midline_opts.update(midline_opts)
+        default_surface_opts = {'radius': 0.024 * self.lengths.mean()}
+        default_surface_opts.update(surface_opts)
+                                                    
         fa = FrameArtistMLab(NF,
             use_centred_midline=False,
-            midline_opts={'opacity': 1, 'line_width': 8}.update(midline_opts),
-            surface_opts={'radius': 0.024 * self.lengths.mean()}.update(surface_opts),
+            midline_opts = default_midline_opts, 
+            surface_opts = default_surface_opts,
             arrow_opts= WormStudio.ARROW_OPT_DEFAULTS,
             arrow_scale = WormStudio.ARROW_SCALE,
             n_arrows = n_arrows)
@@ -201,7 +211,8 @@ class WormStudio():
             rel_camera_distance = 2.0,
             azim_offset = 0.0,
             revolution_rate = 1 / 3,
-            T_max = None):
+            T_max = None,
+            f = None):
         """
         Generate a basic exemplar video showing a rotating 3D worm along a trajectory
         and camera images with overlaid 2D midline reprojections.
@@ -225,6 +236,9 @@ class WormStudio():
             rel_camera_distance, 
             azim_offset, 
             revolution_rate)
+
+        
+
             
         # Initialise ffmpeg process
         output_args = {

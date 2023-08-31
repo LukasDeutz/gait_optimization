@@ -99,6 +99,7 @@ def make_videos_for_figure_2(h5_f):
         # wormlab3d generates videos from simple_worm.FrameSequence 
         FS = FrameSequenceNumpy(x=r, e0=d3, e1=d1, e2=d2)
         setattr(FS, 'times', t)
+        setattr(FS, 'f', f)
     
         file_path = fig_dir / f'sperm_video_{np.round(f, 0)}'
                
