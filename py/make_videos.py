@@ -67,8 +67,9 @@ def make_videos_for_figure_1(h5_a_b):
         filepath = video_dir / filename
         
         WS = WormStudio(FS)
-        WS.generate_clip(filepath, 
-            add_trajectory = False, 
+        WS.generate_clip(
+            filepath, 
+            add_trajectory = False,
             surface_opts = {'taper': 0.0},
             n_arrows = 0.2)
         
@@ -89,10 +90,10 @@ def make_videos_for_figure_2(h5_f):
 
     for i, f in zip(np.arange(len(f_arr), dtype = int)[::5], f_arr[::5]):
             
-        r = h5['FS']['r'][i, :]
-        d1 = h5['FS']['d1'][i, :]
-        d2 = h5['FS']['d2'][i, :]
-        d3 = h5['FS']['d3'][i, :]        
+        r = h5['FS']['r'][i, :10]
+        d1 = h5['FS']['d1'][i, :10]
+        d2 = h5['FS']['d2'][i, :10]
+        d3 = h5['FS']['d3'][i, :10]        
         t = h5['t'][:10]
         
         FS = FrameSequenceNumpy(x=r, e0=d3, e1=d1, e2=d2)
@@ -102,7 +103,8 @@ def make_videos_for_figure_2(h5_f):
                
         WS = WormStudio(FS)
         WS.generate_clip(
-            str(file_path), 
+            file_path, 
+            surface_opts = {'taper': 0.0},            
             add_trajectory = False, 
             n_arrows = 0.2)
 
