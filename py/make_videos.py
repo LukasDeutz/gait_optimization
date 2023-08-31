@@ -64,9 +64,13 @@ def make_videos_for_figure_1(h5_a_b):
         FS = FrameSequenceNumpy(x=r, e0=d3, e1=d1, e2=d2)
     
         filename = f'video_a={a}_b={b0}.mpg'
+        filepath = video_dir / filename
         
         WS = WormStudio(FS)
-        WS.generate_clip(video_dir / filename, add_trajectory = False, n_arrows = 0.2)
+        WS.generate_clip(filepath, 
+            add_trajectory = False, 
+            surface_opts = {'taper': 0.0},
+            n_arrows = 0.2)
         
     return
             

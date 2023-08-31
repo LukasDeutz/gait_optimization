@@ -93,18 +93,21 @@ class WormStudio():
                 
         return lengths
                         
-    def _init_frame_artist(self, n_arrows 
+    def _init_frame_artist(self, 
+            n_arrows, 
+            midline_opts = {},
+            surface_opts = {}
         )-> FrameArtistMLab:
         
         # Set up the artist
         NF = NaturalFrame(self.X[0])
         
         NF.T, NF.M1, NF.M2 = self.D3[0], self.D1[0], self.D2[0]  
-                    
+                                        
         fa = FrameArtistMLab(NF,
             use_centred_midline=False,
-            midline_opts={'opacity': 1, 'line_width': 8},
-            surface_opts={'radius': 0.024 * self.lengths.mean()},
+            midline_opts={'opacity': 1, 'line_width': 8}.update(midline_opts),
+            surface_opts={'radius': 0.024 * self.lengths.mean()}.update(surface_opts),
             arrow_opts= WormStudio.ARROW_OPT_DEFAULTS,
             arrow_scale = WormStudio.ARROW_SCALE,
             n_arrows = n_arrows)
@@ -114,8 +117,10 @@ class WormStudio():
     def _make_3d_plot(self,
             add_trajectory,
             add_centreline,
+            midline_opts,
             add_frame_vectors,
             add_surface,
+            surface_opts,
             draw_e1: bool,
             draw_e2: bool,
             draw_e3: bool,
@@ -129,7 +134,7 @@ class WormStudio():
         
         # initialize figure
         fig = WormStudio._init_figure(fig_width, fig_height)        
-        fa = self._init_frame_artist(n_arrows)
+        fa = self._init_frame_artist(n_arrows, midline_opts, surface_opts)
 
         mps = self._comp_centreline_midpoints()
 
@@ -183,8 +188,10 @@ class WormStudio():
             output_path: PosixPath,
             add_trajectory = True,
             add_centreline = True,
+            midline_opts = {},
             add_frame_vectors = True,            
             add_surface = True,
+            surface_opts = {},
             draw_e1 = True,
             draw_e2 = True,
             draw_e3 = True,
@@ -205,8 +212,10 @@ class WormStudio():
         update_fn = self._make_3d_plot(
             add_trajectory, 
             add_centreline, 
+            midline_opts, 
             add_frame_vectors,             
             add_surface, 
+            surface_opts,
             draw_e1,
             draw_e2,
             draw_e3,
