@@ -99,7 +99,7 @@ def make_videos_for_figure_2(h5_f):
         d1 = h5['FS']['d1'][i, :]
         d2 = h5['FS']['d2'][i, :]
         d3 = h5['FS']['d3'][i, :]        
-        t = h5['t'][:10]
+        t = h5['t'][i, :]
 
         # wormlab3d generates videos from simple_worm.FrameSequence 
         FS = FrameSequenceNumpy(x=r, e0=d3, e1=d1, e2=d2)
