@@ -85,15 +85,20 @@ def make_videos_for_figure_2(h5_f):
     h5, PG = load_h5_file(h5_f)    
     f_arr = 1.0 / PG.v_from_key('T_c')
 
+    #===========================================================================
+    # Make videos
+    #===========================================================================
+    
+    # Set directory 
     fig_dir = video_dir / Path(h5_f).stem
     fig_dir.mkdir(parents=True, exist_ok=True)
 
     for i, f in zip(np.arange(len(f_arr), dtype = int)[::5], f_arr[::5]):
             
-        r = h5['FS']['r'][i, :10]
-        d1 = h5['FS']['d1'][i, :10]
-        d2 = h5['FS']['d2'][i, :10]
-        d3 = h5['FS']['d3'][i, :10]        
+        r = h5['FS']['r'][i, :]
+        d1 = h5['FS']['d1'][i, :]
+        d2 = h5['FS']['d2'][i, :]
+        d3 = h5['FS']['d3'][i, :]        
         t = h5['t'][:10]
 
         # wormlab3d generates videos from simple_worm.FrameSequence 
